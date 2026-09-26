@@ -1,5 +1,5 @@
 #!/bin/sh
-# Download the frozen encoder (int8 bge-small-en-v1.5, MIT licence) and build the three scorer files. Needs curl and python3 with numpy, onnxruntime, tokenizers.
+# Download the frozen encoder (int8 bge-small-en-v1.5, MIT licence) and build the three scorer files. Needs curl and python3 with numpy, onnxruntime, tokenizers (pip install -r requirements.txt).
 set -e
 cd "$(dirname "$0")"; A=snake/demo_assets; mkdir -p $A
 B=https://huggingface.co/Xenova/bge-small-en-v1.5/resolve/main

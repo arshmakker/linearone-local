@@ -1,5 +1,11 @@
 /*
- * l1score.c - criterion-conditioned scorer in C (experimental port of the Python bilinear scorer).
+ * l1score.c - a small local decision model in C: text in, one of N options out, teachable on the fly.
+ *
+ *   $ printf 'The next gap is above. The bird is falling.\n' | l1score --stdin model.onnx vocab.txt flap.bin
+ *   {"label":"flap","p":0.96,"margin":3.29,"tokens":18,"us":7400,"examples":0,"probabilities":{"noop":0.04,"flap":0.96}}
+ *
+ *   Each input line is one request. TEACH adds a labelled example that takes effect on the next request (each option's logit
+ *   also gets DEFAULT_GAMMA x the similarity to its nearest taught example); no retraining, no restart.
  *
  *   state text -> WordPiece (BERT uncased) -> encoder (ONNX Runtime C API), CLS or mean pooling + L2
  *              -> u = s^T (I + D)  ->  logit_c = u . C_c / tau  ->  softmax over the options -> one JSON line

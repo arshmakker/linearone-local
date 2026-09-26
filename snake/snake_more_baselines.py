@@ -1,3 +1,4 @@
+import os; os.chdir(os.path.dirname(os.path.abspath(__file__)))   # files are found next to this script
 import json, re, warnings
 import numpy as np
 from sklearn.tree import DecisionTreeClassifier

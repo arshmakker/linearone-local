@@ -1,4 +1,4 @@
-"""Flap benchmark exactly as pre-registered in PLAN.md. Every non-expert policy is a lookup over the 45 state texts, computed once per arm."""
+"""Flap benchmark exactly as pre-registered in PLAN.md. Every non-expert policy is a lookup over the 63 state texts, computed once per arm."""
 import itertools, json, os, subprocess, sys, warnings
 import numpy as np
 from sklearn.feature_extraction.text import TfidfVectorizer

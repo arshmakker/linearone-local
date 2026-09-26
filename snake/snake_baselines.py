@@ -1,4 +1,5 @@
-"""Snake: TF-IDF and frozen-BERT-style baselines vs L1, same corrections (pre-registered in RETRIES.md)."""
+"""Snake: TF-IDF and frozen-BERT-style baselines vs L1, same corrections."""
+import os; os.chdir(os.path.dirname(os.path.abspath(__file__)))   # files are found next to this script
 import json, warnings
 import numpy as np, onnxruntime as ort
 from sklearn.feature_extraction.text import TfidfVectorizer

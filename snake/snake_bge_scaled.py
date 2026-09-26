@@ -1,3 +1,4 @@
+import os; os.chdir(os.path.dirname(os.path.abspath(__file__)))   # files are found next to this script
 import json, warnings
 import numpy as np, onnxruntime as ort
 from sklearn.linear_model import LogisticRegression

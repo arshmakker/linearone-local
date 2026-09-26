@@ -1,0 +1,5 @@
+numpy
+onnxruntime
+tokenizers
+scikit-learn
+Pillow          # only for snake/render_clip.py

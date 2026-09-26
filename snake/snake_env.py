@@ -1,4 +1,4 @@
-"""10x10 Snake with a scripted safe-greedy expert; states are short text (same phrasing as learnability.py)."""
+"""10x10 Snake with a scripted safe-greedy expert; states are short text (short natural-language descriptions)."""
 import numpy as np
 W = H = 10; ACTS = ["straight", "left", "right"]
 def turn(d, a): return d if a == 0 else ((d[1], -d[0]) if a == 1 else (-d[1], d[0]))

@@ -7,7 +7,7 @@ import numpy as np
 from snake_env import ACTS, Snake
 
 WATCH = "--watch" in sys.argv; CHECK = [0, 10, 25, 50, 100]; EVAL_GAMES, MAX_STEPS = 10, 200
-p = subprocess.Popen(["c/l1score", "--stdin", "bge/model_int8.onnx", "bge/vocab.txt", "c/snake.bin"],
+p = subprocess.Popen(["c/l1score", "--stdin", "demo_assets/model_int8.onnx", "demo_assets/vocab.txt", "demo_assets/snake.bin"],
                      stdin=subprocess.PIPE, stdout=subprocess.PIPE, text=True, bufsize=1)
 def rpc(line): p.stdin.write(line + "\n"); p.stdin.flush(); return json.loads(p.stdout.readline())
 lat = []

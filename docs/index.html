@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>l1-local: fast local decisions</title>
+<style>
+:root{--bg:#0f1218;--card:#181c25;--ink:#e8ebf2;--dim:#98a0b3;--acc:#5ad1ff;--good:#6fdc8c;--bad:#ff6b6b;--line:#2a3040}
+@media (prefers-color-scheme:light){:root{--bg:#f6f7fa;--card:#fff;--ink:#161a22;--dim:#5a6376;--acc:#0a7fb8;--good:#1a9a45;--bad:#d63d3d;--line:#dde1ea}}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.55 system-ui,-apple-system,Segoe UI,sans-serif}
+main{max-width:920px;margin:0 auto;padding:32px 16px 64px}
+h1{font-size:2.1rem;line-height:1.15;margin:.2em 0}h2{margin:2em 0 .3em;font-size:1.35rem}
+.sub{color:var(--dim);font-size:1.1rem;margin:0 0 1.2em}.card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px;margin:14px 0}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}@media(max-width:640px){.grid{grid-template-columns:1fr}}
+canvas{width:100%;height:auto;border-radius:8px;background:#0b0e14;display:block}
+.stat{display:flex;justify-content:space-between;font-variant-numeric:tabular-nums;margin-top:6px}.big{font-size:1.6rem;font-weight:700}
+.good{color:var(--good)}.bad{color:var(--bad)}.dim{color:var(--dim)}
+label{display:block;margin:10px 0 2px}input[type=range]{width:100%}button{background:var(--acc);color:#04202e;border:0;border-radius:8px;padding:8px 12px;font:inherit;font-weight:600;cursor:pointer;margin:3px}
+button.alt{background:transparent;color:var(--ink);border:1px solid var(--line)}
+table{border-collapse:collapse;width:100%}td,th{padding:6px 8px;border-bottom:1px solid var(--line);text-align:left;font-variant-numeric:tabular-nums}
+.bar{height:10px;border-radius:5px;background:var(--acc)}.barbg{background:var(--line);border-radius:5px;width:100%}
+#net{display:grid;grid-template-columns:repeat(8,34px);grid-template-rows:repeat(6,34px);gap:2px;justify-content:center;margin:8px auto}
+#net div{border-radius:4px;border:1px solid rgba(0,0,0,.35)}
+img{max-width:100%;border-radius:10px}code{background:var(--line);padding:1px 5px;border-radius:4px}
+</style></head><body><main>
+<h1>A decision that arrives late is a wrong decision.</h1>
+<p class="sub">l1-local is a small classifier in C that runs on one CPU thread in ~10-20 ms, with no network. Below: what that speed is worth, and, honestly, what it is not.</p>
+
+<h2>1. Flap: same answers, different speed</h2>
+<p class="dim">Two birds fly the same course. Every tick both are handed the <b>identical correct answer</b> (the game's expert rule); the only difference is how long an answer takes. The left bird answers in 12 ms (L1's measured speed). The right one takes as long as you set below (a hosted API from a laptop measured about 430 ms).</p>
+<div class="grid">
+ <div class="card"><b>Local, 12 ms</b><canvas id="c1" width="460" height="300"></canvas><div class="stat"><span>pipes <span class="big good" id="s1">0</span></span><span class="dim">best <span id="b1">0</span> &middot; crashes <span id="d1">0</span></span></div></div>
+ <div class="card"><b>Hosted, <span id="lv">430</span> ms</b><canvas id="c2" width="460" height="300"></canvas><div class="stat"><span>pipes <span class="big bad" id="s2">0</span></span><span class="dim">best <span id="b2">0</span> &middot; crashes <span id="d2">0</span></span></div></div>
+</div>
+<div class="card"><label for="lat">Hosted latency: <b id="lv2">430</b> ms (try 100, then 200)</label><input id="lat" type="range" min="0" max="600" step="10" value="430"><div class="dim">The world runs at 30 ticks per second, the same physics as <code>games/flap_env.py</code>. In this game the bird still copes up to about 100 ms, mostly crashes by 200 ms, and at 430 ms never gets through the first pipe. In our scored benchmark a hosted model given the right answers scored 0 pipes at its real latency and 9 (the cap) with latency removed.</div></div>
+
+<h2>2. Rubik's cube: where speed does not help</h2>
+<p class="dim">A 2x2 cube where the exact answer is known by search. Scramble it, then try to solve it, or ask for the optimal move. In our test no language model, embedding model or hosted API did better than about a coin flip on picking a good move; only models fed the raw stickers reached 50-63%.</p>
+<div class="card"><div id="net"></div><div style="text-align:center">
+ <button id="scr">Scramble (4 moves)</button><button class="alt" id="hint">Show optimal move</button><button class="alt" id="rst">Reset</button><br>
+ <span id="mv"></span></div><div id="msg" style="text-align:center;min-height:1.6em" class="dim"></div></div>
+<div class="card"><b>Chance of picking an optimal move (300 unseen states)</b><table id="cubetab"></table>
+<div class="dim" style="margin-top:6px">One run, Wilson intervals in <code>games/cube_run.txt</code>. Optimal-move rate, not solve rate: nothing except the solver reliably solves it.</div></div>
+
+<h2>3. Snake: learn from corrections, live</h2>
+<p class="dim">The same Snake games, played live by L1 (taught by 25 corrections, no retraining) and by a hosted model. Recorded 2026-09-26.</p>
+<img src="l1_vs_jev_snake.gif" alt="L1 and a hosted model playing Snake side by side" loading="lazy">
+
+<h2>The honest part</h2>
+<div class="card"><ul>
+<li><b>Speed is the advantage.</b> A local model can answer inside a real-time loop; a network call cannot.</li>
+<li><b>Accuracy is not.</b> On all three games a decision tree or embedding + logistic regression on the same data matched or beat L1's nearest-example rule. L1 itself scored 0-2 pipes in Flap where the tree got 9.</li>
+<li>The games are toys with a few dozen state texts. They show latency and instant correction, not that ML is needed.</li>
+<li>One run each on held-out seeds; the plan and its amendments (including two bugs found before scoring) are in <code>games/PLAN.md</code>.</li></ul></div>
+<p class="dim">Code, results and how to reproduce: see the repository README.</p>
+
+<script src="cube_data.js"></script>
+<script>
+/* ---------- Flap: same constants as games/flap_env.py ---------- */
+const TICK=1000/30,G=0.0016,FV=-0.021,SP=0.008,SPACING=0.72,HG=0.17,PW=0.08,BX=0.25,BR=0.02;
+function rng(a){return function(){a|=0;a=a+0x6D2B79F5|0;let t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296}}
+class Bird{constructor(cv,ids,latFn){this.cv=cv;this.ids=ids;this.latFn=latFn;this.best=0;this.deaths=0;this.reset(1)}
+ reset(seed){const r=rng(seed);this.gaps=[];for(let i=0;i<40;i++)this.gaps.push(.3+.4*r());this.y=.5;this.vy=0;this.t=0;this.pend=null;this.dead=0;this.passed=0}
+ px(k){return .9+SPACING*k-SP*this.t}
+ next(){for(let k=0;k<40;k++)if(this.px(k)+PW>BX-BR)return k;return 39}
+ answer(){const g=this.gaps[this.next()];return this.y+3*this.vy>g+.05}
+ step(){ if(this.dead){if(++this.dead>25){this.deaths++;this.reset(Math.floor(Math.random()*1e6))}return}
+  const now=this.t*TICK;let flap=false;
+  if(this.pend&&this.pend.at<=now+1e-9){flap=this.pend.a;this.pend=null}
+  if(!this.pend){const a=this.answer(),L=this.latFn();if(L<=0)flap=flap||a;else this.pend={a:a,at:now+L}}
+  if(flap)this.vy=FV;this.vy+=G;this.y+=this.vy;this.t++;
+  if(this.y<0||this.y>1)this.dead=1;
+  for(let k=0;k<40&&!this.dead;k++){const x=this.px(k);if(x<BX+BR&&x+PW>BX-BR&&Math.abs(this.y-this.gaps[k])>HG-BR)this.dead=1}
+  let p=0;for(let k=0;k<40;k++)if(this.px(k)+PW<BX-BR)p++;this.passed=p;this.best=Math.max(this.best,p);
+  if(this.t>=900){this.reset(Math.floor(Math.random()*1e6))} }
+ draw(){const c=this.cv.getContext("2d"),W=this.cv.width,H=this.cv.height;c.fillStyle="#0b0e14";c.fillRect(0,0,W,H);
+  for(let k=0;k<40;k++){const x=this.px(k);if(x>1.1||x+PW<0)continue;c.fillStyle="#3a8f5a";const gt=(this.gaps[k]-HG)*H,gb=(this.gaps[k]+HG)*H;c.fillRect(x*W,0,PW*W,gt);c.fillRect(x*W,gb,PW*W,H-gb)}
+  c.fillStyle=this.dead?"#ff6b6b":"#ffd166";c.beginPath();c.arc(BX*W,this.y*H,BR*H*1.6,0,7);c.fill();
+  document.getElementById(this.ids[0]).textContent=this.passed;document.getElementById(this.ids[1]).textContent=this.best;document.getElementById(this.ids[2]).textContent=this.deaths}}
+const lat=document.getElementById("lat");
+const b1=new Bird(document.getElementById("c1"),["s1","b1","d1"],()=>12),b2=new Bird(document.getElementById("c2"),["s2","b2","d2"],()=>+lat.value);
+lat.oninput=()=>{document.getElementById("lv").textContent=document.getElementById("lv2").textContent=lat.value};
+let acc=0,last=performance.now();
+function loop(now){acc+=Math.min(now-last,100);last=now;while(acc>=TICK){b1.step();b2.step();acc-=TICK}b1.draw();b2.draw();requestAnimationFrame(loop)}requestAnimationFrame(loop);
+
+/* ---------- Cube: exact model exported from games/cube_env.py ---------- */
+const M=CUBE.moves,COL={U:"#f2f2f2",D:"#f5d623",R:"#e0413a",L:"#f28a30",F:"#3fae5a",B:"#3a6fd8"};
+const app=(s,m)=>{const p=CUBE.perms[m];return p.map((src,dst)=>s[src])},key=s=>s.join("");
+const dist=new Map([[key(CUBE.solved),0]]);let fr=[CUBE.solved];
+for(let d=1;d<=7;d++){const nx=[];for(const s of fr)for(const m of M){const t=app(s,m),k=key(t);if(!dist.has(k)){dist.set(k,d);nx.push(t)}}fr=nx}
+let st=CUBE.solved.slice(),moves=[];
+const layout={U:[2,0],L:[0,2],F:[2,2],R:[4,2],B:[6,2],D:[2,4]};
+function draw(){const n=document.getElementById("net");n.innerHTML="";const cells={};
+ for(const f in layout){CUBE.faces[f].forEach((idx,i)=>{const [cx,cy]=layout[f];cells[(cx+i%2)+","+(cy+(i>>1))]=COL[st[idx]]})}
+ for(let y=0;y<6;y++)for(let x=0;x<8;x++){const d=document.createElement("div");const c=cells[x+","+y];if(c)d.style.background=c;else d.style.visibility="hidden";n.appendChild(d)}
+ const mv=document.getElementById("mv");mv.innerHTML="";M.forEach(m=>{const b=document.createElement("button");b.className="alt";b.textContent=m;b.onclick=()=>{st=app(st,m);moves.push(m);draw()};mv.appendChild(b)});
+ const d=dist.get(key(st)),msg=document.getElementById("msg");msg.textContent=d===0?"Solved!":(d===undefined?"More than 7 moves from solved.":"")}
+document.getElementById("scr").onclick=()=>{st=CUBE.solved.slice();let last=null;for(let i=0;i<4;i++){let m;do{m=M[Math.floor(Math.random()*6)]}while(last&&m===(last.endsWith("'")?last[0]:last+"'"));st=app(st,m);last=m}draw()};
+document.getElementById("rst").onclick=()=>{st=CUBE.solved.slice();draw()};
+document.getElementById("hint").onclick=()=>{const d=dist.get(key(st));const msg=document.getElementById("msg");
+ if(d===undefined){msg.textContent="More than 7 moves from solved: no hint.";return}if(d===0){msg.textContent="Already solved.";return}
+ msg.textContent="Optimal move(s): "+M.filter(m=>dist.get(key(app(st,m)))===d-1).join(" or ")+" ("+d+" moves from solved)"};
+draw();
+/* results from games/cube_run.txt */
+const rows=[["Coin flip",17.7],["L1 nearest-example (taught)",21.3],["Hosted model, 25 examples",18.0],["Hosted model, zero-shot",23.7],["Word TF-IDF + logistic regression",36.3],["Frozen bge-small + logistic regression",40.7],["Decision tree on stickers",60.0],["kNN on stickers",62.7]];
+document.getElementById("cubetab").innerHTML=rows.map(r=>`<tr><td>${r[0]}</td><td style="width:45%"><div class="barbg"><div class="bar" style="width:${r[1]}%"></div></div></td><td>${r[1].toFixed(1)}%</td></tr>`).join("");
+</script></main></body></html>
