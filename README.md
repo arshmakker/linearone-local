@@ -1,9 +1,13 @@
 # linearone-local: decisions that arrive on time
 
 **A small classifier in C that answers in ~10-20 ms on one CPU thread, with no network, and can be corrected on the fly.**
-**▶ Try it in your browser: open [`docs/index.html`](docs/index.html)** (two birds, same correct answers, different speed; a playable 2x2 cube; the Snake clip).
 
-![L1 and a hosted model playing Snake side by side](docs/l1_vs_jev_snake.gif)
+## ▶ [Play with it live in your browser](https://arshmakker.github.io/linearone-local/)
+Four live demos, no install: a **Flap race** (drag the hosted latency slider until the bird dies), a **Snake race**, a **latency budget** calculator (what fits in one frame?) and a **playable 2x2 cube** with an exact-solver hint. Same correct answers for both sides; only speed differs.
+
+| Flap: same answers, 12 ms vs 430 ms | Snake: L1 learning from 25 corrections, live |
+|---|---|
+| ![Flap: local 12 ms bird passes pipes, hosted 430 ms bird crashes](docs/l1_vs_hosted_flap.gif) | ![L1 and a hosted model playing Snake side by side](docs/l1_vs_jev_snake.gif) |
 
 ## Why it might interest you
 A hosted model can be smart and still lose, because a decision that arrives late is a wrong decision. In our real-time *Flap* game, a hosted model handed the right answers scored **0 pipes at its real ~430 ms latency and 9 (the cap) with latency removed**. A local model answers inside the game loop.

@@ -31,7 +31,20 @@ img{max-width:100%;border-radius:10px}code{background:var(--line);padding:1px 5p
 </div>
 <div class="card"><label for="lat">Hosted latency: <b id="lv2">430</b> ms (try 100, then 200)</label><input id="lat" type="range" min="0" max="600" step="10" value="430"><div class="dim">The world runs at 30 ticks per second, the same physics as <code>games/flap_env.py</code>. In this game the bird still copes up to about 100 ms, mostly crashes by 200 ms, and at 430 ms never gets through the first pipe. In our scored benchmark a hosted model given the right answers scored 0 pipes at its real latency and 9 (the cap) with latency removed.</div></div>
 
-<h2>2. Rubik's cube: where speed does not help</h2>
+<h2>2. Snake: same answers, two speeds</h2>
+<p class="dim">Both snakes use the same safe-greedy answer for every move. The local one decides in about 12 ms; the hosted one takes the latency you set. Food eaten in the same time is the whole difference.</p>
+<div class="grid">
+ <div class="card"><b>Local, 12 ms per move</b><canvas id="sc1" width="300" height="300" style="max-width:300px;margin:auto"></canvas><div class="stat"><span>food <span class="big good" id="sf1">0</span></span><span class="dim">games <span id="sg1">0</span> &middot; moves/s <span id="sm1">0</span></span></div></div>
+ <div class="card"><b>Hosted, <span id="slv">430</span> ms per move</b><canvas id="sc2" width="300" height="300" style="max-width:300px;margin:auto"></canvas><div class="stat"><span>food <span class="big bad" id="sf2">0</span></span><span class="dim">games <span id="sg2">0</span> &middot; moves/s <span id="sm2">0</span></span></div></div>
+</div>
+<div class="card"><label for="slat">Hosted latency per move: <b id="slv2">430</b> ms</label><input id="slat" type="range" min="20" max="600" step="10" value="430"><label><input type="checkbox" id="slow"> slow motion (10x) so you can watch the local snake</label>
+<div class="dim">Measured in our live run: local about 24 decisions/s, hosted about 2.3, 127 food vs 15 in 40 seconds (see the recorded clip below).</div></div>
+
+<h2>3. The latency budget: what fits in one decision?</h2>
+<div class="card"><label for="bud">Your time budget: <b id="bv">30</b> ms (30 = a game frame at 30 fps, 100 = a snappy UI, 300 = a blink)</label><input id="bud" type="range" min="10" max="500" step="10" value="30">
+<table id="budtab"></table><div class="dim">Medians we measured: local 12-19 ms, hosted about 430 ms from one laptop over the network. Your network will differ.</div></div>
+
+<h2>4. Rubik's cube: where speed does not help</h2>
 <p class="dim">A 2x2 cube where the exact answer is known by search. Scramble it, then try to solve it, or ask for the optimal move. In our test no language model, embedding model or hosted API did better than about a coin flip on picking a good move; only models fed the raw stickers reached 50-63%.</p>
 <div class="card"><div id="net"></div><div style="text-align:center">
  <button id="scr">Scramble (4 moves)</button><button class="alt" id="hint">Show optimal move</button><button class="alt" id="rst">Reset</button><br>
@@ -39,7 +52,7 @@ img{max-width:100%;border-radius:10px}code{background:var(--line);padding:1px 5p
 <div class="card"><b>Chance of picking an optimal move (300 unseen states)</b><table id="cubetab"></table>
 <div class="dim" style="margin-top:6px">One run, Wilson intervals in <code>games/cube_run.txt</code>. Optimal-move rate, not solve rate: nothing except the solver reliably solves it.</div></div>
 
-<h2>3. Snake: learn from corrections, live</h2>
+<h2>5. The recorded Snake clip: L1 learning from corrections</h2>
 <p class="dim">The same Snake games, played live by L1 (taught by 25 corrections, no retraining) and by a hosted model. Recorded 2026-09-26.</p>
 <img src="l1_vs_jev_snake.gif" alt="L1 and a hosted model playing Snake side by side" loading="lazy">
 
@@ -101,4 +114,32 @@ draw();
 /* results from games/cube_run.txt */
 const rows=[["Coin flip",17.7],["L1 nearest-example (taught)",21.3],["Hosted model, 25 examples",18.0],["Hosted model, zero-shot",23.7],["Word TF-IDF + logistic regression",36.3],["Frozen bge-small + logistic regression",40.7],["Decision tree on stickers",60.0],["kNN on stickers",62.7]];
 document.getElementById("cubetab").innerHTML=rows.map(r=>`<tr><td>${r[0]}</td><td style="width:45%"><div class="barbg"><div class="bar" style="width:${r[1]}%"></div></div></td><td>${r[1].toFixed(1)}%</td></tr>`).join("");
+
+/* ---------- Snake: same rules as snake/snake_env.py, expert answer for both ---------- */
+const SW=10;
+class Snk{constructor(cv,ids,latFn){this.cv=cv;this.ids=ids;this.latFn=latFn;this.rand=rng(7);this.food_total=0;this.games=0;this.mv=[];this.reset();this.wait=0}
+ reset(){this.body=[[5,5],[4,5],[3,5]];this.d=[1,0];this.eaten=0;this.hungry=0;this.placeFood()}
+ placeFood(){for(;;){const f=[Math.floor(this.rand()*SW),Math.floor(this.rand()*SW)];if(!this.body.some(b=>b[0]==f[0]&&b[1]==f[1])){this.food=f;return}}}
+ turn(d,a){return a==0?d:a==1?[d[1],-d[0]]:[-d[1],d[0]]}
+ nxt(a){const nd=this.turn(this.d,a);return[this.body[0][0]+nd[0],this.body[0][1]+nd[1]]}
+ bad(p){return p[0]<0||p[0]>=SW||p[1]<0||p[1]>=SW||this.body.slice(0,-1).some(b=>b[0]==p[0]&&b[1]==p[1])}
+ expert(){let best=null,ba=0;for(let a=0;a<3;a++){const p=this.nxt(a);if(this.bad(p))continue;const dist=Math.abs(p[0]-this.food[0])+Math.abs(p[1]-this.food[1]);if(best===null||dist<best){best=dist;ba=a}}return ba}
+ move(){const a=this.expert(),p=this.nxt(a);this.hungry++;if(this.bad(p)||this.hungry>100){this.games++;this.reset();return}
+  this.d=this.turn(this.d,a);this.body.unshift(p);if(p[0]==this.food[0]&&p[1]==this.food[1]){this.eaten++;this.food_total++;this.hungry=0;this.placeFood()}else this.body.pop()}
+ advance(ms){this.wait+=ms;const L=Math.max(1,this.latFn());while(this.wait>=L){this.wait-=L;this.move();this.mv.push(performance.now())}}
+ draw(){const c=this.cv.getContext("2d"),z=this.cv.width/SW;c.fillStyle="#0b0e14";c.fillRect(0,0,300,300);
+  c.fillStyle="#ff6b6b";c.fillRect(this.food[0]*z+4,this.food[1]*z+4,z-8,z-8);
+  this.body.forEach((b,i)=>{c.fillStyle=i?"#4fbf7a":"#5ad1ff";c.fillRect(b[0]*z+1,b[1]*z+1,z-2,z-2)});
+  const now=performance.now();this.mv=this.mv.filter(t=>now-t<1000);
+  document.getElementById(this.ids[0]).textContent=this.food_total;document.getElementById(this.ids[1]).textContent=this.games;document.getElementById(this.ids[2]).textContent=this.mv.length}}
+const slat=document.getElementById("slat"),slow=document.getElementById("slow");
+const sn1=new Snk(document.getElementById("sc1"),["sf1","sg1","sm1"],()=>12),sn2=new Snk(document.getElementById("sc2"),["sf2","sg2","sm2"],()=>+slat.value);
+slat.oninput=()=>{document.getElementById("slv").textContent=document.getElementById("slv2").textContent=slat.value};
+let sl=performance.now();(function sloop(now){const dt=Math.min(now-sl,100)*(slow.checked?0.1:1);sl=now;sn1.advance(dt);sn2.advance(dt);sn1.draw();sn2.draw();requestAnimationFrame(sloop)})(performance.now());
+/* ---------- latency budget ---------- */
+const bud=document.getElementById("bud");
+function budget(){const B=+bud.value;document.getElementById("bv").textContent=B;
+ const rows=[["Local L1 (about 12-19 ms)",12,19],["Hosted API (about 430 ms)",430,430]];
+ document.getElementById("budtab").innerHTML=rows.map(r=>{const fits=r[2]<=B;return `<tr><td>${r[0]}</td><td>${Math.floor(B/r[1])} decision(s) fit</td><td class="${fits?"good":"bad"}">${fits?"fits":"too slow"}</td></tr>`}).join("")}
+bud.oninput=budget;budget();
 </script></main></body></html>
