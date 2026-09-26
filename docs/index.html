@@ -20,6 +20,7 @@ table{border-collapse:collapse;width:100%}td,th{padding:6px 8px;border-bottom:1p
 #net div{border-radius:4px;border:1px solid rgba(0,0,0,.35)}
 img{max-width:100%;border-radius:10px}code{background:var(--line);padding:1px 5px;border-radius:4px}
 </style></head><body><main>
+<p class="dim" style="margin:0 0 6px"><a href="https://github.com/arshmakker/linearone-local" style="color:var(--acc);font-weight:600">★ View on GitHub</a> &middot; <a href="https://github.com/arshmakker/linearone-local#readme" style="color:var(--acc)">README</a> &middot; <a href="https://github.com/arshmakker/linearone-local/blob/main/COMPARISON.md" style="color:var(--acc)">Named comparison (Jev, Opus, local LLMs)</a> &middot; <a href="https://github.com/arshmakker/linearone-local/blob/main/games/PLAN.md" style="color:var(--acc)">Pre-registered plan</a></p>
 <h1>A decision that arrives late is a wrong decision.</h1>
 <p class="sub">linearone-local is a small classifier in C that runs on one CPU thread in ~10-20 ms, with no network. Below: what that speed is worth, and, honestly, what it is not.</p>
 
@@ -74,7 +75,7 @@ img{max-width:100%;border-radius:10px}code{background:var(--line);padding:1px 5p
 <li><b>Accuracy is not.</b> On all three games a decision tree or embedding + logistic regression on the same data matched or beat L1's nearest-example rule. L1 itself scored 0-2 pipes in Flap where the tree got 9.</li>
 <li>The games are toys with a few dozen state texts. They show latency and instant correction, not that ML is needed.</li>
 <li>One run each on held-out seeds; the plan and its amendments (including two bugs found before scoring) are in <code>games/PLAN.md</code>.</li></ul></div>
-<p class="dim">Code, results and how to reproduce: see the repository README.</p>
+<p class="dim">Code, results and how to reproduce: <a href="https://github.com/arshmakker/linearone-local#readme" style="color:var(--acc)">README</a> &middot; <a href="https://github.com/arshmakker/linearone-local/blob/main/COMPARISON.md" style="color:var(--acc)">COMPARISON.md</a> &middot; <a href="https://github.com/arshmakker/linearone-local/tree/main/games" style="color:var(--acc)">games and logs</a> &middot; <a href="https://github.com/arshmakker/linearone-local/blob/main/LICENSE" style="color:var(--acc)">Apache-2.0</a> &middot; <a href="https://github.com/arshmakker/linearone-local" style="color:var(--acc)">github.com/arshmakker/linearone-local</a></p>
 
 <script src="cube_data.js"></script>
 <script>
