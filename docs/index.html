@@ -27,7 +27,7 @@ img{max-width:100%;border-radius:10px}code{background:var(--line);padding:1px 5p
 <p class="dim">Two birds fly the same course. Every tick both are handed the <b>identical correct answer</b> (the game's expert rule); the only difference is how long an answer takes. The left bird answers in 12 ms (L1's measured speed). The right one takes as long as you set below (a hosted API from a laptop measured about 430 ms).</p>
 <div class="grid">
  <div class="card"><b>Local, 12 ms</b><canvas id="c1" width="460" height="300"></canvas><div class="stat"><span>pipes <span class="big good" id="s1">0</span></span><span class="dim">best <span id="b1">0</span> &middot; crashes <span id="d1">0</span></span></div></div>
- <div class="card"><b>Hosted, <span id="lv">430</span> ms</b><canvas id="c2" width="460" height="300"></canvas><div class="stat"><span>pipes <span class="big bad" id="s2">0</span></span><span class="dim">best <span id="b2">0</span> &middot; crashes <span id="d2">0</span></span></div></div>
+ <div class="card"><b>Hosted API (Jev measured ~430 ms; simulated), <span id="lv">430</span> ms</b><canvas id="c2" width="460" height="300"></canvas><div class="stat"><span>pipes <span class="big bad" id="s2">0</span></span><span class="dim">best <span id="b2">0</span> &middot; crashes <span id="d2">0</span></span></div></div>
 </div>
 <div class="card"><label for="lat">Hosted latency: <b id="lv2">430</b> ms (try 100, then 200)</label><input id="lat" type="range" min="0" max="600" step="10" value="430"><div class="dim">The world runs at 30 ticks per second, the same physics as <code>games/flap_env.py</code>. In this game the bird still copes up to about 100 ms, mostly crashes by 200 ms, and at 430 ms never gets through the first pipe. In our scored benchmark a hosted model given the right answers scored 0 pipes at its real latency and 9 (the cap) with latency removed.</div></div>
 
@@ -35,7 +35,7 @@ img{max-width:100%;border-radius:10px}code{background:var(--line);padding:1px 5p
 <p class="dim">Both snakes use the same safe-greedy answer for every move. The local one decides in about 12 ms; the hosted one takes the latency you set. Food eaten in the same time is the whole difference.</p>
 <div class="grid">
  <div class="card"><b>Local, 12 ms per move</b><canvas id="sc1" width="300" height="300" style="max-width:300px;margin:auto"></canvas><div class="stat"><span>food <span class="big good" id="sf1">0</span></span><span class="dim">games <span id="sg1">0</span> &middot; moves/s <span id="sm1">0</span></span></div></div>
- <div class="card"><b>Hosted, <span id="slv">430</span> ms per move</b><canvas id="sc2" width="300" height="300" style="max-width:300px;margin:auto"></canvas><div class="stat"><span>food <span class="big bad" id="sf2">0</span></span><span class="dim">games <span id="sg2">0</span> &middot; moves/s <span id="sm2">0</span></span></div></div>
+ <div class="card"><b>Hosted API (simulated), <span id="slv">430</span> ms per move</b><canvas id="sc2" width="300" height="300" style="max-width:300px;margin:auto"></canvas><div class="stat"><span>food <span class="big bad" id="sf2">0</span></span><span class="dim">games <span id="sg2">0</span> &middot; moves/s <span id="sm2">0</span></span></div></div>
 </div>
 <div class="card"><label for="slat">Hosted latency per move: <b id="slv2">430</b> ms</label><input id="slat" type="range" min="20" max="600" step="10" value="430"><label><input type="checkbox" id="slow"> slow motion (10x) so you can watch the local snake</label>
 <div class="dim">Measured in our live run: local about 24 decisions/s, hosted about 2.3, 127 food vs 15 in 40 seconds (see the recorded clip below).</div></div>
@@ -59,6 +59,14 @@ img{max-width:100%;border-radius:10px}code{background:var(--line);padding:1px 5p
 <h2>5. The recorded Snake clip: L1 learning from corrections</h2>
 <p class="dim">The same Snake games, played live by L1 (taught by 25 corrections, no retraining) and by a hosted model. Recorded 2026-09-26.</p>
 <img src="l1_vs_jev_snake.gif" alt="L1 and a hosted model playing Snake side by side" loading="lazy">
+
+<h2>Who is who</h2>
+<div class="card"><table>
+<tr><td><b>L1</b></td><td>this repo's model: int8 bge-small-en-v1.5 encoder + nearest-example memory, C runtime</td></tr>
+<tr><td><b>Jev</b></td><td>TypeSafe's hosted decision API, model id <code>jev-latest</code>; our runs 2026-09-23 to 26, untuned first-attempt prompts</td></tr>
+<tr><td><b>Claude Opus</b></td><td>alias "opus" via Claude Code subagents, batched answers (not independent API calls); exact model version not pinned</td></tr>
+<tr><td><b>Local LLMs</b></td><td>llama3.2:3b, qwen2.5:1.5b and 0.5b under Ollama on an 8-vCPU box</td></tr></table>
+<div class="dim" style="margin-top:6px">The birds and snakes above are <b>simulations</b> with the hosted latency set by the slider (default 430 ms, our measured Jev median from one laptop). We did not watch Jev play these live animations; the scored benchmarks with real Jev calls are in <code>COMPARISON.md</code>.</div></div>
 
 <h2>The honest part</h2>
 <div class="card"><ul>

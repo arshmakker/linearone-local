@@ -18,6 +18,8 @@ A hosted model can be smart and still lose, because a decision that arrives late
 - ~10-20 ms per decision (18.7 ms with the 64-token cap used in the cube game) on one thread, about 90 MB of RAM (measured earlier on the original build; not re-measured for this repo).
 - **It is not more accurate than simple baselines.** In all three games a decision tree, or logistic regression on the same embeddings, matched or beat L1's nearest-example rule (in Flap L1 scored 0-2 pipes where the tree scored 9). The claim here is speed and instant correction.
 
+**Who's who:** *Jev* = TypeSafe's hosted API (`jev-latest`); *Opus* = Claude Opus via Claude Code subagents (alias, batched, version not pinned); *local LLMs* = llama3.2:3b and qwen2.5:1.5b/0.5b under Ollama; *L1* = int8 bge-small-en-v1.5 + nearest-example memory. The browser demos are simulations using Jev's measured ~430 ms; the real-Jev results are in `COMPARISON.md`.
+
 ## Results at a glance (one run each, held-out seeds)
 | Game | What happened |
 |---|---|
