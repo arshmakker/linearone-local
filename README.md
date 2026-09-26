@@ -1,4 +1,4 @@
-# l1-local: decisions that arrive on time
+# linearone-local: decisions that arrive on time
 
 **A small classifier in C that answers in ~10-20 ms on one CPU thread, with no network, and can be corrected on the fly.**
 **▶ Try it in your browser: open [`docs/index.html`](docs/index.html)** (two birds, same correct answers, different speed; a playable 2x2 cube; the Snake clip).

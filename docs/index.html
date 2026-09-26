@@ -1,6 +1,6 @@
 <!doctype html>
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>l1-local: fast local decisions</title>
+<title>linearone-local: fast local decisions</title>
 <style>
 :root{--bg:#0f1218;--card:#181c25;--ink:#e8ebf2;--dim:#98a0b3;--acc:#5ad1ff;--good:#6fdc8c;--bad:#ff6b6b;--line:#2a3040}
 @media (prefers-color-scheme:light){:root{--bg:#f6f7fa;--card:#fff;--ink:#161a22;--dim:#5a6376;--acc:#0a7fb8;--good:#1a9a45;--bad:#d63d3d;--line:#dde1ea}}
@@ -21,7 +21,7 @@ table{border-collapse:collapse;width:100%}td,th{padding:6px 8px;border-bottom:1p
 img{max-width:100%;border-radius:10px}code{background:var(--line);padding:1px 5px;border-radius:4px}
 </style></head><body><main>
 <h1>A decision that arrives late is a wrong decision.</h1>
-<p class="sub">l1-local is a small classifier in C that runs on one CPU thread in ~10-20 ms, with no network. Below: what that speed is worth, and, honestly, what it is not.</p>
+<p class="sub">linearone-local is a small classifier in C that runs on one CPU thread in ~10-20 ms, with no network. Below: what that speed is worth, and, honestly, what it is not.</p>
 
 <h2>1. Flap: same answers, different speed</h2>
 <p class="dim">Two birds fly the same course. Every tick both are handed the <b>identical correct answer</b> (the game's expert rule); the only difference is how long an answer takes. The left bird answers in 12 ms (L1's measured speed). The right one takes as long as you set below (a hosted API from a laptop measured about 430 ms).</p>
