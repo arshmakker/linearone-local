@@ -29,6 +29,13 @@ A hosted model can be smart and still lose, because a decision that arrives late
 Named comparison with Jev and Opus, including where L1 loses: [`COMPARISON.md`](COMPARISON.md).
 Full numbers: `games/flap_run_*.txt`, `games/cube_run.txt`, `games/*_results*.json`.
 
+## Which models played in each game
+| Game | Players |
+|---|---|
+| **Snake** | L1; Jev (`jev-latest`), zero-shot and with 10 / 25 examples in the prompt; Claude Opus (44 unseen states, zero-shot and with 10 / 25 examples); local LLMs llama3.2:3b, qwen2.5:1.5b, qwen2.5:0.5b (zero-shot); baselines: word TF-IDF + LR, bge-small + LR, decision tree |
+| **Flap** | L1 (gamma 100 and 10000); Jev with 0 / 25 / 100 corrections, cached per state, latency injected at 430 ms; baselines: decision tree, word TF-IDF + LR, bge-small + LR; coin flip; scripted expert |
+| **2x2 cube** | L1; Jev zero-shot and with 25 examples; baselines: decision tree, kNN on stickers, word TF-IDF + LR, bge-small + LR; coin flip; exact search solver (ground truth). No Opus or local LLMs on this game |
+
 ## How to read the evidence
 `games/PLAN.md` is a dated, append-only *pre-registration*: what we would measure and what we expected, written before running, with **amendments** below it that override earlier sections (two bugs were found and fixed before any number was reported, and are documented). Each game was run once.
 
@@ -46,6 +53,15 @@ The tuned nearest-example weight is a build option: `make -C snake/c CFLAGS="-O3
 
 ## Layout
 `snake/`: Snake demo, baselines, and the C runtime in `snake/c/`. `games/`: Flap and cube benchmarks and `PLAN.md`. `docs/`: the browser demo.
+
+## Credits
+- **bge-small-en-v1.5** by BAAI (MIT), int8 ONNX build from the Xenova repository on Hugging Face, downloaded by `fetch_assets.sh`.
+- **ONNX Runtime** by Microsoft (MIT), the inference engine `l1score` links against.
+- **Jev** by TypeSafe AI, the hosted API we compared against; **Claude Opus** by Anthropic; **Llama 3.2** by Meta and **Qwen2.5** by Alibaba Cloud, run under **Ollama**. We only call or run them; no weights or outputs are redistributed here.
+- **scikit-learn**, **NumPy**, **Hugging Face tokenizers** and **Pillow** for baselines, data and clips.
+- Earlier results quoted in `COMPARISON.md` use **TweetEval** (Barbieri et al., CC BY 3.0) and **Banking77** (PolyAI, Casanueva et al.).
+- Snake, Flappy-style games and the Rubik's cube are classic public-domain-style ideas; "Flap" here is our own tiny implementation, unrelated to any commercial game.
+Names and trademarks belong to their owners; their mention is for comparison only and does not imply endorsement.
 
 ## Limits
 Latencies in Flap and cube time-to-solve are injected from measured values, not measured inside a live game. Hosted latency was measured from one laptop. The encoder file you download is a public int8 quantisation and differs slightly from the one behind the committed numbers, so reruns give the same picture but not identical figures (Flap especially depends on which corrections the learner is given). Apache-2.0 licensed (see `LICENSE` and `NOTICE`); bge-small weights are downloaded, not redistributed.
