@@ -32,3 +32,10 @@ Jev and Opus got one untuned prompt; L1 and baselines were trained on task data.
 
 ## Terms
 Checked 2026-09-26: TypeSafe's public Terms (updated 2026-09-19), Acceptable Use Policy (updated 2026-09-23) and Privacy Policy contain no clause on benchmarking, publishing comparisons or use of outputs; the Terms prohibit reverse engineering the site's software, which we did not do (black-box API calls only). The logged-in console could not be read (HTTP 403), and no separate API terms were found. This is not legal advice.
+
+## Which models played in each game
+| Game | Players |
+|---|---|
+| **Snake** | L1; Jev (`jev-latest`), zero-shot and with 10 / 25 examples in the prompt; Claude Opus (44 unseen states, zero-shot and with 10 / 25 examples); local LLMs llama3.2:3b, qwen2.5:1.5b, qwen2.5:0.5b (zero-shot); baselines: word TF-IDF + LR, bge-small + LR, decision tree |
+| **Flap** | L1 (gamma 100 and 10000); Jev with 0 / 25 / 100 corrections, cached per state, latency injected at 430 ms; baselines: decision tree, word TF-IDF + LR, bge-small + LR; coin flip; scripted expert |
+| **2x2 cube** | L1; Jev zero-shot and with 25 examples; baselines: decision tree, kNN on stickers, word TF-IDF + LR, bge-small + LR; coin flip; exact search solver (ground truth). No Opus or local LLMs on this game |

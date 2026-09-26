@@ -69,6 +69,15 @@ img{max-width:100%;border-radius:10px}code{background:var(--line);padding:1px 5p
 <tr><td><b>Local LLMs</b></td><td>llama3.2:3b, qwen2.5:1.5b and 0.5b under Ollama on an 8-vCPU box</td></tr></table>
 <div class="dim" style="margin-top:6px">The birds and snakes above are <b>simulations</b> with the hosted latency set by the slider (default 430 ms, our measured Jev median from one laptop). We did not watch Jev play these live animations; the scored benchmarks with real Jev calls are in <code>COMPARISON.md</code>.</div></div>
 
+<h2>Where to use it, and where not to</h2>
+<div class="card"><table>
+<tr><th>Use</th><th>Evidence</th></tr>
+<tr><td><b>First-pass triage</b> before a bigger model or a human</td><td>NIST-CSF: L1 took the surest 40-50% at 93-97% accuracy; cascade 0.82 vs Opus 0.83, saving 40-50% of Opus calls</td></tr>
+<tr><td><b>Real-time loops</b> (games, UI, sensors)</td><td>Flap: hosted scored 0 pipes at 430 ms</td></tr>
+<tr><td><b>Instant corrections</b> without retraining</td><td>Snake: 25 corrections, then plays alone</td></tr>
+<tr><td class="dim"><i>Offline/private tagging; high-volume cheap routing</i></td><td class="dim">hypotheses, not demonstrated here</td></tr></table>
+<div class="dim" style="margin-top:6px"><b>Not for:</b> accuracy-critical tasks on clear text (use a frontier model), or anything a decision tree or embeddings + logistic regression already handles.</div></div>
+
 <h2>The honest part</h2>
 <div class="card"><ul>
 <li><b>Speed is the advantage.</b> A local model can answer inside a real-time loop; a network call cannot.</li>
