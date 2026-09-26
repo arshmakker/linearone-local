@@ -20,6 +20,7 @@ A hosted model can be smart and still lose, because a decision that arrives late
 | **Flap** (real time) | Local models (decision tree, embeddings + logistic regression) hit the 9-pipe cap. A hosted model with correct answers: 9 pipes with latency removed, **0 at its real 430 ms**. L1's own rule: 0-2 pipes. |
 | **2x2 cube** | Chance of picking an optimal move on 300 unseen states: coin flip 18%, hosted model 18-24%, L1 21%, embeddings + LR 24-41%, decision tree / kNN on raw stickers 50-63%. Nobody reliably solves it; only the exact search solver does. |
 | **Snake** | L1 taught by 25 corrections plays live at ~20 decisions/s; the hosted model at ~2/s. A simple tree or embeddings + LR match L1's accuracy. |
+Named comparison with Jev and Opus, including where L1 loses: [`COMPARISON.md`](COMPARISON.md).
 Full numbers: `games/flap_run_*.txt`, `games/cube_run.txt`, `games/*_results*.json`.
 
 ## How to read the evidence
