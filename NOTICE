@@ -1,0 +1,4 @@
+l1-local
+Copyright 2026 the l1-local authors
+
+This product downloads, but does not redistribute, the bge-small-en-v1.5 encoder weights (MIT licence, BAAI) and links against ONNX Runtime (MIT licence, Microsoft).
