@@ -1,0 +1,128 @@
+[
+ {
+  "arm": "coin flip",
+  "pipes0": 0.0,
+  "cap0": 0.0,
+  "lat_ms": 0,
+  "pipes": 0.0,
+  "ticks": 30.1,
+  "cap": 0.0
+ },
+ {
+  "arm": "always no-flap",
+  "pipes0": 0.0,
+  "cap0": 0.0,
+  "lat_ms": 0,
+  "pipes": 0.0,
+  "ticks": 25.0,
+  "cap": 0.0
+ },
+ {
+  "arm": "scripted expert",
+  "pipes0": 9.0,
+  "cap0": 1.0,
+  "lat_ms": 0.1,
+  "pipes": 9.0,
+  "ticks": 900.0,
+  "cap": 1.0
+ },
+ {
+  "arm": "decision tree (K=25)",
+  "pipes0": 9.0,
+  "cap0": 1.0,
+  "lat_ms": 0.1,
+  "pipes": 9.0,
+  "ticks": 900.0,
+  "cap": 1.0
+ },
+ {
+  "arm": "word TF-IDF + LR (K=25)",
+  "pipes0": 9.0,
+  "cap0": 1.0,
+  "lat_ms": 1,
+  "pipes": 9.0,
+  "ticks": 900.0,
+  "cap": 1.0
+ },
+ {
+  "arm": "frozen bge + scaled LR (K=25)",
+  "pipes0": 9.0,
+  "cap0": 1.0,
+  "lat_ms": 4,
+  "pipes": 9.0,
+  "ticks": 900.0,
+  "cap": 1.0
+ },
+ {
+  "arm": "L1 nearest (taught) (K=25)",
+  "pipes0": 2.05,
+  "cap0": 0.0,
+  "lat_ms": 12,
+  "pipes": 1.9,
+  "ticks": 254.0,
+  "cap": 0.0
+ },
+ {
+  "arm": "decision tree (K=100)",
+  "pipes0": 9.0,
+  "cap0": 1.0,
+  "lat_ms": 0.1,
+  "pipes": 9.0,
+  "ticks": 900.0,
+  "cap": 1.0
+ },
+ {
+  "arm": "word TF-IDF + LR (K=100)",
+  "pipes0": 9.0,
+  "cap0": 1.0,
+  "lat_ms": 1,
+  "pipes": 5.6,
+  "ticks": 591.25,
+  "cap": 0.35
+ },
+ {
+  "arm": "frozen bge + scaled LR (K=100)",
+  "pipes0": 9.0,
+  "cap0": 1.0,
+  "lat_ms": 4,
+  "pipes": 9.0,
+  "ticks": 900.0,
+  "cap": 1.0
+ },
+ {
+  "arm": "L1 nearest (taught) (K=100)",
+  "pipes0": 1.9,
+  "cap0": 0.0,
+  "lat_ms": 12,
+  "pipes": 1.8,
+  "ticks": 246.0,
+  "cap": 0.0
+ },
+ {
+  "arm": "Jev (K=0)",
+  "pipes0": 0.0,
+  "cap0": 0.0,
+  "lat_ms": 430,
+  "pipes": 0.0,
+  "ticks": 25.0,
+  "cap": 0.0
+ },
+ {
+  "arm": "Jev (K=25)",
+  "pipes0": 2.85,
+  "cap0": 0.0,
+  "lat_ms": 430,
+  "pipes": 0.0,
+  "ticks": 68.0,
+  "cap": 0.0
+ },
+ {
+  "arm": "Jev (K=100)",
+  "pipes0": 9.0,
+  "cap0": 1.0,
+  "lat_ms": 430,
+  "pipes": 0.0,
+  "ticks": 68.0,
+  "cap": 0.0
+ }
+]

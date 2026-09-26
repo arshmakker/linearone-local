@@ -1,0 +1,13 @@
+teaching: 100 corrections collected in 1 zero-latency games (K=100 requested; there are only 63 distinct states)
+arm                              pipes@0ms cap@0ms | latency  pipes  ticks   cap
+coin flip                              0.0    0.00 |   0.0ms    0.0     30  0.00
+always no-flap                         0.0    0.00 |   0.0ms    0.0     25  0.00
+scripted expert                        9.0    1.00 |   0.1ms    9.0    900  1.00
+decision tree (K=25)                   9.0    1.00 |   0.1ms    9.0    900  1.00
+word TF-IDF + LR (K=25)                0.8    0.00 |   1.0ms    0.8     99  0.00
+frozen bge + scaled LR (K=25)          0.0    0.00 |   4.0ms    0.0     47  0.00
+L1 nearest (taught) (K=25)             0.0    0.00 |  12.0ms    0.0     64  0.00
+decision tree (K=100)                  9.0    1.00 |   0.1ms    9.0    900  1.00
+word TF-IDF + LR (K=100)               7.2    0.65 |   1.0ms    1.8    242  0.00
+frozen bge + scaled LR (K=100)         9.0    1.00 |   4.0ms    9.0    900  1.00
+L1 nearest (taught) (K=100)            0.0    0.00 |  12.0ms    0.0     30  0.00

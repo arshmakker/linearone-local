@@ -1,0 +1,222 @@
+[
+ {
+  "id": 1,
+  "text": "Food is ahead and to the right. Blocked: ahead yes, left yes, right yes.",
+  "expert": "straight"
+ },
+ {
+  "id": 2,
+  "text": "Food is ahead and centered. Blocked: ahead no, left no, right no.",
+  "expert": "straight"
+ },
+ {
+  "id": 3,
+  "text": "Food is level and to the right. Blocked: ahead yes, left yes, right no.",
+  "expert": "right"
+ },
+ {
+  "id": 4,
+  "text": "Food is level and to the left. Blocked: ahead no, left no, right yes.",
+  "expert": "left"
+ },
+ {
+  "id": 5,
+  "text": "Food is behind and to the right. Blocked: ahead yes, left yes, right yes.",
+  "expert": "straight"
+ },
+ {
+  "id": 6,
+  "text": "Food is level and to the right. Blocked: ahead yes, left yes, right yes.",
+  "expert": "straight"
+ },
+ {
+  "id": 7,
+  "text": "Food is behind and to the left. Blocked: ahead no, left no, right no.",
+  "expert": "left"
+ },
+ {
+  "id": 8,
+  "text": "Food is behind and to the right. Blocked: ahead no, left yes, right no.",
+  "expert": "right"
+ },
+ {
+  "id": 9,
+  "text": "Food is level and to the left. Blocked: ahead no, left yes, right no.",
+  "expert": "straight"
+ },
+ {
+  "id": 10,
+  "text": "Food is level and to the left. Blocked: ahead yes, left no, right yes.",
+  "expert": "left"
+ },
+ {
+  "id": 11,
+  "text": "Food is behind and to the left. Blocked: ahead no, left yes, right yes.",
+  "expert": "straight"
+ },
+ {
+  "id": 12,
+  "text": "Food is behind and centered. Blocked: ahead yes, left yes, right yes.",
+  "expert": "straight"
+ },
+ {
+  "id": 13,
+  "text": "Food is ahead and to the left. Blocked: ahead no, left yes, right yes.",
+  "expert": "straight"
+ },
+ {
+  "id": 14,
+  "text": "Food is behind and to the left. Blocked: ahead yes, left yes, right yes.",
+  "expert": "straight"
+ },
+ {
+  "id": 15,
+  "text": "Food is ahead and to the left. Blocked: ahead yes, left no, right no.",
+  "expert": "left"
+ },
+ {
+  "id": 16,
+  "text": "Food is level and to the left. Blocked: ahead no, left no, right no.",
+  "expert": "left"
+ },
+ {
+  "id": 17,
+  "text": "Food is ahead and to the left. Blocked: ahead yes, left yes, right no.",
+  "expert": "right"
+ },
+ {
+  "id": 18,
+  "text": "Food is level and to the left. Blocked: ahead no, left yes, right yes.",
+  "expert": "straight"
+ },
+ {
+  "id": 19,
+  "text": "Food is behind and to the left. Blocked: ahead yes, left no, right no.",
+  "expert": "left"
+ },
+ {
+  "id": 20,
+  "text": "Food is ahead and to the right. Blocked: ahead no, left yes, right yes.",
+  "expert": "straight"
+ },
+ {
+  "id": 21,
+  "text": "Food is ahead and to the left. Blocked: ahead no, left yes, right no.",
+  "expert": "straight"
+ },
+ {
+  "id": 22,
+  "text": "Food is behind and to the left. Blocked: ahead no, left yes, right no.",
+  "expert": "straight"
+ },
+ {
+  "id": 23,
+  "text": "Food is ahead and centered. Blocked: ahead yes, left yes, right no.",
+  "expert": "right"
+ },
+ {
+  "id": 24,
+  "text": "Food is ahead and to the right. Blocked: ahead yes, left yes, right no.",
+  "expert": "right"
+ },
+ {
+  "id": 25,
+  "text": "Food is ahead and centered. Blocked: ahead no, left yes, right yes.",
+  "expert": "straight"
+ },
+ {
+  "id": 26,
+  "text": "Food is ahead and centered. Blocked: ahead yes, left no, right no.",
+  "expert": "left"
+ },
+ {
+  "id": 27,
+  "text": "Food is behind and centered. Blocked: ahead no, left no, right no.",
+  "expert": "straight"
+ },
+ {
+  "id": 28,
+  "text": "Food is behind and centered. Blocked: ahead yes, left no, right yes.",
+  "expert": "left"
+ },
+ {
+  "id": 29,
+  "text": "Food is behind and centered. Blocked: ahead yes, left no, right no.",
+  "expert": "left"
+ },
+ {
+  "id": 30,
+  "text": "Food is ahead and to the left. Blocked: ahead yes, left no, right yes.",
+  "expert": "left"
+ },
+ {
+  "id": 31,
+  "text": "Food is behind and to the left. Blocked: ahead no, left no, right yes.",
+  "expert": "left"
+ },
+ {
+  "id": 32,
+  "text": "Food is level and to the right. Blocked: ahead no, left yes, right no.",
+  "expert": "right"
+ },
+ {
+  "id": 33,
+  "text": "Food is level and to the left. Blocked: ahead yes, left yes, right no.",
+  "expert": "right"
+ },
+ {
+  "id": 34,
+  "text": "Food is level and to the right. Blocked: ahead yes, left no, right yes.",
+  "expert": "left"
+ },
+ {
+  "id": 35,
+  "text": "Food is ahead and to the left. Blocked: ahead yes, left yes, right yes.",
+  "expert": "straight"
+ },
+ {
+  "id": 36,
+  "text": "Food is behind and centered. Blocked: ahead no, left yes, right no.",
+  "expert": "straight"
+ },
+ {
+  "id": 37,
+  "text": "Food is ahead and centered. Blocked: ahead yes, left no, right yes.",
+  "expert": "left"
+ },
+ {
+  "id": 38,
+  "text": "Food is behind and centered. Blocked: ahead yes, left yes, right no.",
+  "expert": "right"
+ },
+ {
+  "id": 39,
+  "text": "Food is behind and centered. Blocked: ahead no, left yes, right yes.",
+  "expert": "straight"
+ },
+ {
+  "id": 40,
+  "text": "Food is ahead and to the right. Blocked: ahead yes, left no, right no.",
+  "expert": "right"
+ },
+ {
+  "id": 41,
+  "text": "Food is behind and centered. Blocked: ahead no, left no, right yes.",
+  "expert": "straight"
+ },
+ {
+  "id": 42,
+  "text": "Food is ahead and centered. Blocked: ahead no, left no, right yes.",
+  "expert": "straight"
+ },
+ {
+  "id": 43,
+  "text": "Food is behind and to the right. Blocked: ahead yes, left no, right yes.",
+  "expert": "left"
+ },
+ {
+  "id": 44,
+  "text": "Food is behind and to the left. Blocked: ahead yes, left yes, right no.",
+  "expert": "right"
+ }
+]

@@ -1,0 +1,102 @@
+[
+ {
+  "state": "Food is ahead and to the right. Blocked: ahead no, left no, right no.",
+  "action": "straight"
+ },
+ {
+  "state": "Food is level and to the right. Blocked: ahead no, left no, right no.",
+  "action": "right"
+ },
+ {
+  "state": "Food is behind and to the right. Blocked: ahead no, left no, right no.",
+  "action": "right"
+ },
+ {
+  "state": "Food is ahead and to the left. Blocked: ahead no, left no, right no.",
+  "action": "straight"
+ },
+ {
+  "state": "Food is level and to the left. Blocked: ahead yes, left no, right no.",
+  "action": "left"
+ },
+ {
+  "state": "Food is behind and to the left. Blocked: ahead yes, left no, right yes.",
+  "action": "left"
+ },
+ {
+  "state": "Food is ahead and to the left. Blocked: ahead no, left no, right yes.",
+  "action": "straight"
+ },
+ {
+  "state": "Food is behind and to the right. Blocked: ahead yes, left no, right no.",
+  "action": "right"
+ },
+ {
+  "state": "Food is level and to the right. Blocked: ahead no, left yes, right yes.",
+  "action": "straight"
+ },
+ {
+  "state": "Food is behind and to the right. Blocked: ahead no, left yes, right yes.",
+  "action": "straight"
+ },
+ {
+  "state": "Food is behind and to the right. Blocked: ahead no, left yes, right yes.",
+  "action": "straight"
+ },
+ {
+  "state": "Food is level and to the right. Blocked: ahead yes, left no, right no.",
+  "action": "right"
+ },
+ {
+  "state": "Food is ahead and to the right. Blocked: ahead no, left no, right yes.",
+  "action": "straight"
+ },
+ {
+  "state": "Food is level and to the right. Blocked: ahead no, left no, right yes.",
+  "action": "straight"
+ },
+ {
+  "state": "Food is behind and to the right. Blocked: ahead no, left no, right yes.",
+  "action": "straight"
+ },
+ {
+  "state": "Food is level and to the left. Blocked: ahead yes, left yes, right yes.",
+  "action": "straight"
+ },
+ {
+  "state": "Food is ahead and to the right. Blocked: ahead no, left yes, right no.",
+  "action": "straight"
+ },
+ {
+  "state": "Food is ahead and to the right. Blocked: ahead yes, left no, right yes.",
+  "action": "left"
+ },
+ {
+  "state": "Food is ahead and centered. Blocked: ahead no, left yes, right no.",
+  "action": "straight"
+ },
+ {
+  "state": "Food is behind and to the right. Blocked: ahead yes, left yes, right no.",
+  "action": "right"
+ },
+ {
+  "state": "Food is ahead and to the right. Blocked: ahead no, left yes, right no.",
+  "action": "straight"
+ },
+ {
+  "state": "Food is ahead and to the right. Blocked: ahead no, left yes, right no.",
+  "action": "straight"
+ },
+ {
+  "state": "Food is ahead and to the right. Blocked: ahead no, left yes, right no.",
+  "action": "straight"
+ },
+ {
+  "state": "Food is ahead and to the right. Blocked: ahead no, left yes, right no.",
+  "action": "straight"
+ },
+ {
+  "state": "Food is ahead and to the right. Blocked: ahead no, left yes, right no.",
+  "action": "straight"
+ }
+]

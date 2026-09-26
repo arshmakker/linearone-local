@@ -1,0 +1,19 @@
+teaching: 100 corrections collected in 3 zero-latency games (K=100 requested; there are only 63 distinct states)
+Jev K=0: 63 calls, 25026 input tokens = $0.0011
+Jev K=25: 63 calls, 51864 input tokens = $0.0022
+Jev K=100: 63 calls, 130425 input tokens = $0.0055
+arm                              pipes@0ms cap@0ms | latency  pipes  ticks   cap
+coin flip                              0.0    0.00 |   0.0ms    0.0     30  0.00
+always no-flap                         0.0    0.00 |   0.0ms    0.0     25  0.00
+scripted expert                        9.0    1.00 |   0.1ms    9.0    900  1.00
+decision tree (K=25)                   9.0    1.00 |   0.1ms    9.0    900  1.00
+word TF-IDF + LR (K=25)                9.0    1.00 |   1.0ms    9.0    900  1.00
+frozen bge + scaled LR (K=25)          9.0    1.00 |   4.0ms    9.0    900  1.00
+L1 nearest (taught) (K=25)             2.0    0.00 |  12.0ms    1.9    254  0.00
+decision tree (K=100)                  9.0    1.00 |   0.1ms    9.0    900  1.00
+word TF-IDF + LR (K=100)               9.0    1.00 |   1.0ms    5.6    591  0.35
+frozen bge + scaled LR (K=100)         9.0    1.00 |   4.0ms    9.0    900  1.00
+L1 nearest (taught) (K=100)            1.9    0.00 |  12.0ms    1.8    246  0.00
+Jev (K=0)                              0.0    0.00 | 430.0ms    0.0     25  0.00
+Jev (K=25)                             2.9    0.00 | 430.0ms    0.0     68  0.00
+Jev (K=100)                            9.0    1.00 | 430.0ms    0.0     68  0.00
