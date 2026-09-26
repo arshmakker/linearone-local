@@ -3,7 +3,7 @@
 **A small classifier in C that answers in ~10-20 ms on one CPU thread, with no network, and can be corrected on the fly.**
 
 ## ▶ [Play with it live in your browser](https://arshmakker.github.io/linearone-local/)
-Four live demos, no install: a **Flap race** (drag the hosted latency slider until the bird dies), a **Snake race**, a **latency budget** calculator (what fits in one frame?) and a **playable 2x2 cube** with an exact-solver hint. Same correct answers for both sides; only speed differs.
+Four live demos, no install: a **Flap race** (drag the hosted latency slider until the bird dies), a **Snake race**, a **latency budget** calculator (what fits in one frame?) and a **playable 2x2 cube** with an exact-solver hint and a **race** (coin flip vs a learner trained in your browser vs the exact solver). Same correct answers for both sides; only speed differs.
 
 | Flap: same answers, 12 ms vs 430 ms | Snake: L1 learning from 25 corrections, live |
 |---|---|

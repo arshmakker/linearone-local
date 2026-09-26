@@ -49,6 +49,10 @@ img{max-width:100%;border-radius:10px}code{background:var(--line);padding:1px 5p
 <div class="card"><div id="net"></div><div style="text-align:center">
  <button id="scr">Scramble (4 moves)</button><button class="alt" id="hint">Show optimal move</button><button class="alt" id="rst">Reset</button><br>
  <span id="mv"></span></div><div id="msg" style="text-align:center;min-height:1.6em" class="dim"></div></div>
+<div class="card"><b>Race: 20 scrambles of depth 4, 12 moves each</b>
+<p class="dim" style="margin:.3em 0">Three players make greedy moves. <b>Coin flip</b> picks a random move. <b>Nearest neighbour</b> is a real learner trained right here in your browser on 200 solver-labelled states that never include the 20 test scrambles (the benchmark's recipe). <b>Exact solver</b> is breadth-first search.</p>
+<div style="text-align:center"><button id="race">Race</button></div><table id="racetab"></table>
+<div class="dim">Results differ run to run: over 30 races here the nearest neighbour solved about half (10.8 of 20 on average), the coin flip almost none. Our scored benchmark measured 20-30% for kNN on one 20-scramble run, and the interval on 20 games is very wide. The hosted model and L1 scored near chance on picking a good move.</div></div>
 <div class="card"><b>Chance of picking an optimal move (300 unseen states)</b><table id="cubetab"></table>
 <div class="dim" style="margin-top:6px">One run, Wilson intervals in <code>games/cube_run.txt</code>. Optimal-move rate, not solve rate: nothing except the solver reliably solves it.</div></div>
 
@@ -111,6 +115,17 @@ document.getElementById("hint").onclick=()=>{const d=dist.get(key(st));const msg
  if(d===undefined){msg.textContent="More than 7 moves from solved: no hint.";return}if(d===0){msg.textContent="Already solved.";return}
  msg.textContent="Optimal move(s): "+M.filter(m=>dist.get(key(app(st,m)))===d-1).join(" or ")+" ("+d+" moves from solved)"};
 draw();
+
+/* ---------- cube race ---------- */
+const inv=m=>m.endsWith("'")?m[0]:m+"'",pick=a=>a[Math.floor(Math.random()*a.length)];
+const optimal=s=>{const d=dist.get(key(s));return M.filter(m=>dist.get(key(app(s,m)))===d-1)};
+function scr(depth){let s=CUBE.solved.slice(),last=null;for(let i=0;i<depth;i++){let m;do{m=pick(M)}while(last&&m===inv(last));s=app(s,m);last=m}return s}
+function trainKNN(n,held){const X=[],Y=[];for(let i=0;X.length<n;i++){const s=scr(1+i%6);if(key(s)===key(CUBE.solved)||held.has(key(s)))continue;X.push(s);Y.push(optimal(s)[0])}
+ return s=>{let b=1e9,by=null;for(let i=0;i<X.length;i++){let d=0;for(let j=0;j<24;j++)if(X[i][j]!==s[j])d++;if(d<b){b=d;by=Y[i]}}return by}}
+function play(pol,s0){let s=s0.slice();for(let k=0;k<12;k++){if(key(s)===key(CUBE.solved))return k;s=app(s,pol(s))}return key(s)===key(CUBE.solved)?12:-1}
+document.getElementById("race").onclick=()=>{const T=[];for(let i=0;i<20;i++){let s;do{s=scr(4)}while(key(s)===key(CUBE.solved));T.push(s)}const knn=trainKNN(200,new Set(T.map(key)));
+ const players=[["Coin flip",s=>pick(M)],["Nearest neighbour (trained in your browser, 200 states)",knn],["Exact solver (search)",s=>optimal(s)[0]]];
+ document.getElementById("racetab").innerHTML="<tr><th>Player</th><th>Solved</th><th>Avg moves when solved</th></tr>"+players.map(p=>{const r=T.map(s=>play(p[1],s)).filter(x=>x>=0);return `<tr><td>${p[0]}</td><td>${r.length} / 20</td><td>${r.length?(r.reduce((a,b)=>a+b,0)/r.length).toFixed(1):"-"}</td></tr>`}).join("")};
 /* results from games/cube_run.txt */
 const rows=[["Coin flip",17.7],["L1 nearest-example (taught)",21.3],["Hosted model, 25 examples",18.0],["Hosted model, zero-shot",23.7],["Word TF-IDF + logistic regression",36.3],["Frozen bge-small + logistic regression",40.7],["Decision tree on stickers",60.0],["kNN on stickers",62.7]];
 document.getElementById("cubetab").innerHTML=rows.map(r=>`<tr><td>${r[0]}</td><td style="width:45%"><div class="barbg"><div class="bar" style="width:${r[1]}%"></div></div></td><td>${r[1].toFixed(1)}%</td></tr>`).join("");
